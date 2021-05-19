@@ -1,13 +1,20 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, FlatList} from 'react-native';
+import {Body, Text} from 'native-base';
 import {styles} from '../styles/styles';
 import {Container} from 'native-base';
-import Icon from 'react-native-vector-icons/Entypo';
 import HeaderBar from '../components/HeaderBar';
-export default function Feed({navigation}) {
+// import axios from 'axios';
+// import {useState, useEffect} from 'react';
+import Footer from '../components/FooterBar';
+export default function Feed({navigation, route}) {
   return (
     <Container>
-      <HeaderBar title="Feed" navigation={navigation} />
+      <HeaderBar navigation={navigation} title="Feed" />
+      <Body>
+        <Text>Feed</Text>
+      </Body>
+      <Footer navigation={navigation} />
     </Container>
   );
 }

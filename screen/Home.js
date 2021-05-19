@@ -1,60 +1,46 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, Image, FlatList, ScrollView} from 'react-native';
-import {styles} from '../styles/styles';
-import {useSelector, useDispatch} from 'react-redux';
-import {getProducts} from '../redux/actions/products';
+import {
+  View,
+  Image,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
+import {Appbar} from 'react-native-paper';
+import {Platform} from 'react-native';
+import {Avatar} from 'react-native-paper';
+import {Container} from 'native-base';
+const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+import axios from 'axios';
 
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Button} from 'react-native-paper';
 export default function Home({navigation}) {
-  const [data, setData] = useState();
-  const state = useSelector(state => state);
-  console.log(state.products.products);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProducts());
-  }, []);
+  const [products, setProducts] = useState();
+  const fetchData = async () => {
+    try {
+      const {data} = await axios.get('https://fakestoreapi.com/products');
+      setProducts(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
-    <View>
-      {/* <FlatList
-        data={state.products.products}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <View style={{backgroundColor: 'pink', margin: 10, width: 150}}>
-            <Image source={{uri: item.image}} />
-            <Text>{item.title}</Text>
-          </View>
-        )}
-      /> */}
-      <ScrollView>
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}>
-          {state.products.products.map(item => (
-            <View
-              key={item.id}
-              style={{backgroundColor: 'gray', margin: 10, width: 180}}>
-              <Image
-                source={{uri: item.image}}
-                style={{width: 180, height: 100}}
-                resizeMode="stretch"
-              />
-              <Text style={{padding: 3, color: 'white'}}>{item.title}</Text>
-              <View>
-                <Text style={{fontSize: 19, fontWeight: 'bold', padding: 3}}>
-                  $ {item.price}
-                </Text>
-                <Button
-                  title="View Product"
-                  onPress={() => navigation.navigate('Profile', item)}
-                />
-              </View>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+    <>
+      <Appbar.Header style={{backgroundColor: 'black'}}>
+        <Appbar.BackAction onPress={() => {}} />
+        <Appbar.Content title="Home" subtitle={'Home Screen'} />
+        <Appbar.Action icon="magnify" onPress={() => {}} />
+        <Appbar.Action icon={MORE_ICON} onPress={() => {}} />
+      </Appbar.Header>
+      <Container>
+        <Avatar.Image size={50} source={require('./icons8_user_80px.png')} />
+      </Container>
+    </>
   );
 }

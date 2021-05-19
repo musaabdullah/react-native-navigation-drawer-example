@@ -3,23 +3,17 @@ import {View, Text} from 'react-native';
 import {styles} from '../styles/styles';
 import axios from 'axios';
 import {useState, useEffect} from 'react';
+import {Container, Body, Text} from 'native-base';
+import FooterBar from '../components/HeaderBar';
+import HeaderBar from '../components/FooterBar';
 export default function Details() {
-  const fetchProduct = async () => {
-    try {
-      const {data} = await axios.get(
-        'https://jsonplaceholder.typicode.com/posts',
-      );
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchProduct();
-  }, []);
   return (
-    <View style={styles.container}>
-      <Text>Details</Text>
-    </View>
+    <Container>
+      <HeaderBar navigation={navigation} title="Feed" />
+      <Body>
+        <Text>Feed</Text>
+      </Body>
+      <Footer navigation={navigation} />
+    </Container>
   );
 }
